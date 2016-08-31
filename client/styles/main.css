@@ -22,15 +22,24 @@ body {
   bottom: 45px;
   left: 90%;
   margin-left: -50px;
-  width: 70%
+  width: 70%;
 }
 
 #message-display {
+  position: absolute;
   color: black;
-  border-width:5px;	 
-  border-style:solid;
-  bottom: 60px;
-  margin-left: -50px;
+  bottom: 90px;
+  width: 80%;
+  height: 100%;
+  left: 20%;
+  margin-left: -5%;
+}
+
+#message-display span {
+  position: absolute;
+  left: 3%;
+  font-family:  "Cyrillic";
+  font-size: 30px;
 }
 
 /* The side navigation menu */

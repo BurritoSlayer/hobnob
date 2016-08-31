@@ -2,9 +2,15 @@ window.onload = function() {
     
     let text_user_id = 001; //will need to change after testing
     var MessageContext = {
-        displayContext = null;
-    }, 
-    current_messages = ["hi", "hey", "wsup", "nm, u?", "nm.."];
+        displayContext : null
+    }
+    function Message(sender, content) {
+        this.messageSender = sender
+        this.messageContent = content
+    }
+    var current_messages = [new Message("you","hi"),new Message("contact", "hey"), 
+                            new Message("you","wsup"), new Message("contact", "nm, u?"), 
+                            new Message("you", "nm..")];
 
     function loadTexts() {
       //clears the message display
@@ -34,14 +40,16 @@ window.onload = function() {
     }
     
     function addMessages(messages) {
-        htmlToAdd = "";
+        var htmlToAdd = "";
+        var counter = 3;
         
         for (m of messages) {
-            if (typeof m != "string") {
-                console.log("invalid message")
+            if (typeof m.content != "string") {
+                console.log("invalid message");
             }
             
-            htmlToAdd += '<div id="message" >' + m + "</div";
+            htmlToAdd += '<span id="message" style="bottom:' + counter + '%;">' + m.sender + ": " + m.content "</span>";
+            counter += 10;
         }
         
         document.getElementById("message-display").innerHTML = htmlToAdd;
