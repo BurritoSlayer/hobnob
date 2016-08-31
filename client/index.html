@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HobNob</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="scripts/main.js"></script>
+  </head>
+  <body>
+    <!--       sidebar       -->   
+    <div class="sidenav">
+      <a onclick="loadTexts()">texts</a>
+      <a href="#">facebook</a>
+      <a href="#">reddit</a>
+      <a href="#">slack</a>
+      <a href="#">hobchat</a>
+    </div>
+    <!--      end sidebar    -->
+      
+    <!--   message display   -->
+    <div id="message-display">
+      <div id="message">
+          hi
+      </div>
+    </div>
+    <!-- end message display -->
+       
+    <!--    message sender   -->
+    <div id="message-input-container">
+      <div class="form-group">
+        <input type="text" class="form-control" id="text-input">
+      </div>
+    </div>
+    <div id="button-container">
+      <button type="button" class="btn btn-warning">Send</button>
+    </div>
+    <!--  end message sender -->
+  </body>
+  
+  <script src="scripts/sms.js"></script> 
+</html>
+
+
+<!-- 
+<div id="sidebar-wrapper" role="navigation">
+  <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+          <a href="#" onClick="loadTexts();">Texts</a>
+        </li>
+        <li class="sidebar-brand">
+            <p>test</p>
+        </li>
+  </ul>
+</div>
+-->
