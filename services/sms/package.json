@@ -11,5 +11,9 @@
     "url": "https://github.com/burritoSlayer/hobnob/services/sms"
   },
   "author": "Nick Tacey",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.5.4",
+    "twilio": "^2.9.2"
+  }
 }
