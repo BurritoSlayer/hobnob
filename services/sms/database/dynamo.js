@@ -1,23 +1,25 @@
 var AWS = require("aws-sdk");
+var context = require("../context");
 
 AWS.config.update({
-    region: "us-west-2",
-    endpoint: "ec2-52-88-138-186.us-west-2.compute.amazonaws.com"
+    region: context.aws_data.region,
+    endpoint: context.aws_data.endpoint
 });
 
 var dynamodb = new AWS.DynamoDB();
 
 var params = {
-    TableName : "Texts",
+    TableName : "texts",
     KeySchema: [       
-        { AttributeName: "text_id", KeyType: "HASH"},  //Partition key
+        { AttributeName: "sid", KeyType: "HASH" },  //Partition key
+        { AttributeName: "timestamp", KeyType: "RANGE" }  //Sort key
     ],
     AttributeDefinitions: [       
         { AttributeName: "text_id", AttributeType: "N" }
     ],
     ProvisionedThroughput: {       
         ReadCapacityUnits: 10, 
-        WriteCapacityUnits: 10
+        WriteCapacityUnits: 5
     }
 };
 

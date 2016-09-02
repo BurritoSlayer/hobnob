@@ -5,6 +5,13 @@ var MessageContext = {
     displayContext : null
 }
 
+var userSender = (function(){
+    var screenName = user.screen_name;
+    
+    return screenName === null ? "you" : screenName;
+    
+})();
+
 function Message(sender, content, displayId) {
     this.messageSender = sender;
     this.messageContent = content;
@@ -12,9 +19,9 @@ function Message(sender, content, displayId) {
     this.displayNumber = (this.displayId * 10) + 3;
 }
 
-var current_messages = [new Message("you","hi", 4),new Message("contact", "hey", 3), 
-                        new Message("you","wsup", 2), new Message("contact", "nm, u?", 1), 
-                        new Message("you", "nm..", 0)];
+var current_messages = [new Message(userSender,"hi", 4),new Message("contact", "hey", 3), 
+                        new Message(userSender,"wsup", 2), new Message("contact", "nm, u?", 1), 
+                        new Message(userSender, "nm..", 0)];
 
 function loadTexts() {
   //clears the message display
@@ -67,7 +74,7 @@ function addMessages(messages) {
 }
 
 function newMessage(messages, newMessageContent) {
-    messages.push(new Message("you", newMessageContent, -1));
+    messages.push(new Message(userSender, newMessageContent, -1));
     incrementMessages(messages);
     clearMessageDisplay();
     addMessages(messages);
@@ -85,11 +92,17 @@ function incrementMessages(messages) {
     }
 }
 
+// key listeners
 window.onkeyup = function(e) {
     var key = e.keyCode ? e.keyCode : e.which;
     let messageString = document.getElementById("text-input").value;
 
     if (key == 13) {
         submitMessage();
+    }
+    
+    if (key == 9) {
+        document.getElementById("text-input").focus();
+        document.getElementById("text-input").select();                                                                                                         
     }
 }
