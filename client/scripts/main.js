@@ -36,15 +36,15 @@ function loadTexts() {
   addMessages(current_messages);
 }
 
-function sync_texts() {
+function syncTexts() {
     $.ajax({
         type: 'POST',
-        data: {id: text_user_id},
-        url:'https://', //ec2 instance
-        dataType: 'json',
-        success: function (json) {
-            last_received = json.last_message_id;
-        }
+        //data: {id: sms_user_id},
+        url:'ec2-52-88-252-242.us-west-2.compute.amazonaws.com/texts', //ec2 instance
+        //dataType: 'json',
+        //success: function (json) {
+            //last_received = json.last_message_id;
+        //}
     });
 
     //setTimeout("loadTexts()", 2000);
