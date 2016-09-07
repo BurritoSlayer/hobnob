@@ -40,7 +40,7 @@ function syncTexts() {
     xhr = new XMLHttpRequest();
     
     if ("withCredentials" in xhr) {
-        xhr.open('POST', 'ec2-52-88-252-242.us-west-2.compute.amazonaws.com', true);
+        xhr.open('GET', 'http://ec2-54-69-82-220.us-west-2.compute.amazonaws.com:8081/texts', true);
     } else if (typeof XDomainRequest != "undefined") {
         xhr = new XDomainRequest();
         xhr.open(method, url);

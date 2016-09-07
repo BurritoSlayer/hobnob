@@ -19,15 +19,16 @@ http.createServer(function(req, res){
             req.on('end', function() {
                 postData = qs.parse(body);
                 
-                if (postData === undefined || (postData[receiver] === null || postData[receiver] === '') 
-                    || (postData[messageContent] === null || postData[messageContent] === '')) 
+                if (postData === undefined || (postData[receiver] === undefined || postData[receiver] === ''
+                    || postData[receiver] === null) || (postData[messageContent] === undefined 
+                    || postData[messageContent] === '' || postData[messageContent] === null)) 
                 {
                     finished = false;
                 } else {
                     var receiver = postData[receiver];
                     var messageContent = postData[messageContent];
                     
-                    sendTest.sendMessage(receiver, messageContent);
+                    sendText.sendMessage(receiver, messageContent);
                 }
                 
                 if (!finished) {
