@@ -37,19 +37,25 @@ function loadTexts() {
 }
 
 function syncTexts() {
-    $.ajax({
-        type: 'POST',
-        //data: {id: sms_user_id},
-        url:'ec2-52-88-252-242.us-west-2.compute.amazonaws.com/texts', //ec2 instance
-        //dataType: 'json',
-        //success: function (json) {
-            //last_received = json.last_message_id;
-        //}
-    });
-
-    //setTimeout("loadTexts()", 2000);
+    xhr = new XMLHttpRequest();
+    
+    if ("withCredentials" in xhr) {
+        xhr.open('POST', 'ec2-52-88-252-242.us-west-2.compute.amazonaws.com', true);
+    } else if (typeof XDomainRequest != "undefined") {
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        xhr = null;
+    }
+    xhr.onload = function() {
+        var responseText = xhr.responseText;
+        console.log(responseText);
+    };
+    
+    xhr.send();
+    return null;
 }
-
+    
 function submitMessage(){
     let messageString = document.getElementById("text-input").value;
     
@@ -90,6 +96,19 @@ function incrementMessages(messages) {
         m.displayId++;
         m.displayNumber = m.displayNumber + 10;
     }
+}
+
+function createCorsRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+        xhr.open(method, url, true)
+    } else if (typeof XDomainRequest != "undefined") {
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        xhr = null;
+    }
+    return xhr;
 }
 
 // key listeners
