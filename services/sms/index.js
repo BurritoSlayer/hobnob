@@ -8,7 +8,7 @@ var port = 8081;
 http.createServer(function(req, res){
     if (req.method === 'POST') {
         if (req.url === '/texts') {
-            let body = '';
+            var body = '';
             var postData;
             
             req.on('data', function(data) {
@@ -20,13 +20,13 @@ http.createServer(function(req, res){
             });
             
             if (postData === undefined || (postData[receiver] === null || postData[receiver] === '') 
-                || (postData[messageContent] === null || postData[messageContent] === '')); 
+                || (postData[messageContent] === null || postData[messageContent] === '')) 
             {
                 res.writeHead(404, {'Content-Type': 'text/html'});
                 res.write('Error empty data. Required: receiver and messageContent');
             } else {
-                let receiver = postData[receiver];
-                let messageContent = postData[messageContent];
+                var receiver = postData[receiver];
+                var messageContent = postData[messageContent];
                 
                 sendTest.sendMessage(receiver, messageContent);
                 
