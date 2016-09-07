@@ -10,6 +10,7 @@ http.createServer(function(req, res){
         if (req.url === '/texts') {
             var body = '';
             var postData;
+            var finished = true;
             
             req.on('data', function(data) {
                 body += 'data';
@@ -17,24 +18,30 @@ http.createServer(function(req, res){
             
             req.on('end', function() {
                 postData = qs.parse(body);
+                
+                if (postData === undefined || (postData[receiver] === null || postData[receiver] === '') 
+                    || (postData[messageContent] === null || postData[messageContent] === '')) 
+                {
+                    finished = false;
+                } else {
+                    var receiver = postData[receiver];
+                    var messageContent = postData[messageContent];
+                    
+                    sendTest.sendMessage(receiver, messageContent);
+                }
+                
+                if (!finished) {
+                    res.writeHead(404, {'Content-Type': 'text/html'});
+                    res.write('Error empty data. Required: receiver and messageContent');
+                    res.end();
+                } else {
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                    res.write('thanks for the data yo');
+                    res.end();
+                    console.log('posted');
+                }
             });
             
-            if (postData === undefined || (postData[receiver] === null || postData[receiver] === '') 
-                || (postData[messageContent] === null || postData[messageContent] === '')) 
-            {
-                res.writeHead(404, {'Content-Type': 'text/html'});
-                res.write('Error empty data. Required: receiver and messageContent');
-            } else {
-                var receiver = postData[receiver];
-                var messageContent = postData[messageContent];
-                
-                sendTest.sendMessage(receiver, messageContent);
-                
-                res.writeHead(200, {'Content-Type': 'text/html'});
-                res.write('thanks for the data yo');
-                res.end();
-                console.log('posted');
-            }
         } else if (req.url === '/server') {
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write('initializing build script');
