@@ -64,11 +64,9 @@ function saveMessage(textMessage) {
 }
 
 function sendMessage(sender, messageContent){
-    'use strict';
+    const textMessage = new MessageModel.textMessage(sender, context.twilio_data.accPhoneNum, messageContent);
     
-    let textMessage = new MessageModel.textMessage(sender, context.twilio_data.accPhoneNum, messageContent);
-    
-    let updatedMessage = createMessage(textMessage); 
+    const updatedMessage = createMessage(textMessage); 
     
     if (updatedMessage != null) {
         saveMessage(updatedMessage);
