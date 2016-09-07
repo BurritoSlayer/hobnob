@@ -3,9 +3,9 @@
  * dynamoDB
  */
 var twilio = require('twilio');
-var context = require('context');
+var context = require('../context');
 var AWS = require("aws-sdk");
-var MessageModel = require("../models/textMessage.js")
+var MessageModel = require("../models/textMessage.js");
 
 function createMessage(inputTextMessage) {
     var client = new twilio.RestClient(context.twilio_data.accountSid, context.twilio_data.authToken);
@@ -33,8 +33,8 @@ function createMessage(inputTextMessage) {
                 console.error('Error creating message: ' + error.message);
                 return null;
             }
-        
-});
+    });
+};
 
 function saveMessage(textMessage) {
     AWS.config.update({
@@ -64,6 +64,8 @@ function saveMessage(textMessage) {
 }
 
 function sendMessage(sender, messageContent){
+    'use strict';
+    
     let textMessage = new MessageModel.textMessage(sender, context.twilio_data.accPhoneNum, messageContent);
     
     let updatedMessage = createMessage(textMessage); 

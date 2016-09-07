@@ -1,4 +1,4 @@
 #!/bin/bash
 git stash
-git pull 
+git pull
 node index.js

@@ -25,6 +25,6 @@ http.createServer(function(req, res){
         }
     } else {
         res.writeHead(405, 'Method Not Supported', {'Content-Type': 'text/html'});
-	res.end();
+	    res.end();
     }
 }).listen(port);
