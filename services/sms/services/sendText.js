@@ -63,8 +63,8 @@ function saveMessage(textMessage) {
     });
 }
 
-function sendMessage(sender, messageContent){
-    const textMessage = new MessageModel.textMessage(sender, context.twilio_data.accPhoneNum, messageContent);
+function sendMessage(receiver, messageContent){
+    const textMessage = new MessageModel.textMessage(receiver, context.twilio_data.accPhoneNum, messageContent);
     
     const updatedMessage = createMessage(textMessage); 
     
