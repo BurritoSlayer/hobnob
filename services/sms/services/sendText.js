@@ -51,6 +51,8 @@ function saveMessage(textMessage) {
     var params = {
         TableName: "texts",
         Item: {
+            "sid" : textMessage.sid;
+            "timestamp" : textMessage.timestamp;
             "sender" : textMessage.sender,
             "receiver" : textMessage.reciever,
             "messageContent" : textMessage.messageContent
@@ -78,8 +80,10 @@ exports.sendMessage = function(receiver, messageContent){
     // need to refactor to Promises down the road.. current code can cause bugs
     // if the timeout completes before the return of createMessage()
     function waitForIt(){
-        
-        if (messageUpdated.timestamp === null || messageUpdated.timestamp === 'undefined') {
+        if (typeof messageUpdated === 'undefined' ) {
+            setTimeout(function(){waitForIt()},100);
+            console.log('waiting..');
+        } else if (messageUpdated.timestamp === 'undefined') {
             setTimeout(function(){waitForIt()},100);
             console.log('waiting..');
         } else {
