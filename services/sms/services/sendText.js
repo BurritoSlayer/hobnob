@@ -69,13 +69,17 @@ function saveMessage(textMessage) {
 exports.sendMessage = function(receiver, messageContent){
     const textMessage = new MessageModel.textMessage(receiver, context.twilio_data.accPhoneNum, messageContent);
     
-    const updatedMessage = createMessage(textMessage); 
+    //const updatedMessage = createMessage(textMessage); 
     
-    if (updatedMessage != null) {
-        saveMessage(updatedMessage);
-        console.log('message saved');
-    } else {
-        console.error('updatedMessage was null');
-    } 
+    Promise.resolve(createMessage(textMessage)).then(updatedMessage => {
+    
+        if (updatedMessage != null) {
+            saveMessage(updatedMessage);
+            console.log('message saved');
+        } else {
+            console.error('updatedMessage was null');
+        } 
+        
+    });
 };
 
