@@ -73,6 +73,7 @@ exports.sendMessage = function(receiver, messageContent){
     const textMessage = new MessageModel.textMessage(receiver, context.twilio_data.accPhoneNum, messageContent);
     
     //const updatedMessage = createMessage(textMessage); 
+    createMessage(textMessage);
     
     // need to refactor to Promises down the road.. current code can cause bugs
     // if the timeout completes before the return of createMessage()
