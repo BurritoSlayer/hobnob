@@ -8,6 +8,7 @@ var AWS = require("aws-sdk");
 var MessageModel = require("../models/textMessage.js");
 
 var exports = module.exports = {};
+var isPaused = true;
 
 function createMessage(inputTextMessage) {
     var client = new twilio.RestClient(context.twilio_data.accountSid, context.twilio_data.authToken);
@@ -29,6 +30,7 @@ function createMessage(inputTextMessage) {
                 console.log(message.dateCreated);
                 updatedMessage.timestamp = message.dateCreated;
                 
+                var isPaused=true;
                 return updatedMessage;
             } else {
                 console.error('Error creating message: ' + error.message);
@@ -54,7 +56,7 @@ function saveMessage(textMessage) {
         }
     }
     
-    console.log('attempting to add new text to dynamo..')
+    console.log('attempting to add new text to dynamo..');
     
     docClient.put(params, function(err, data) {
         if(err) {
@@ -71,15 +73,23 @@ exports.sendMessage = function(receiver, messageContent){
     
     //const updatedMessage = createMessage(textMessage); 
     
-    Promise.resolve(createMessage(textMessage)).then(updatedMessage => {
-    
-        if (updatedMessage != null) {
-            return saveMessage(updatedMessage);
-            console.log('message saved');
-        } else {
-            console.error('updatedMessage was null');
-        } 
+    // need to refactor to Promises down the road.. current code can cause bugs
+    // if the timeout completes before the return of createMessage()
+    function waitForIt(){
+        const updatedMessage = createMessage(textMessage);
         
-    });
+        if (isPaused) {
+            setTimeout(function(){waitForIt()},100);
+        } else {
+            if (updatedMessage != null) {
+                return saveMessage(updatedMessage);
+                console.log('message saved');
+            } else {
+                return null;
+                console.error('updatedMessage was null');
+            } 
+        };
+    }
+    
 };
 
