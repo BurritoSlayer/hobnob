@@ -7,6 +7,8 @@ var context = require('../context');
 var AWS = require("aws-sdk");
 var MessageModel = require("../models/textMessage.js");
 
+var exports = module.exports = {};
+
 function createMessage(inputTextMessage) {
     var client = new twilio.RestClient(context.twilio_data.accountSid, context.twilio_data.authToken);
     
@@ -63,7 +65,7 @@ function saveMessage(textMessage) {
     });
 }
 
-function sendMessage(receiver, messageContent){
+exports.sendMessage = function(receiver, messageContent){
     const textMessage = new MessageModel.textMessage(receiver, context.twilio_data.accPhoneNum, messageContent);
     
     const updatedMessage = createMessage(textMessage); 
@@ -72,3 +74,4 @@ function sendMessage(receiver, messageContent){
         saveMessage(updatedMessage);
     }
 };
+

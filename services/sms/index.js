@@ -28,10 +28,10 @@ http.createServer(function(req, res){
                     var receiver = postData['receiver'];
                     var messageContent = postData['messageContent'];
                     
-                    console.log('receiver: ' + receiver);
-                    console.log('messageContent: ' + messageContent);
-                    console.log('postData: ' + postData)
-                    //sendText.sendMessage(receiver, messageContent);
+                    //console.log('receiver: ' + receiver);
+                    //console.log('messageContent: ' + messageContent);
+                    //console.log('postData: ' + postData)
+                    sendText.sendMessage(receiver, messageContent);
                 }
                 
                 if (!finished) {
