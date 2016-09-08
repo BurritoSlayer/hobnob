@@ -71,7 +71,7 @@ exports.sendMessage = function(receiver, messageContent){
     
     //const updatedMessage = createMessage(textMessage); 
     
-    Promise.resolve(createMessage(textMessage)).then(function(updatedMessage){
+    Promise.resolve(createMessage(textMessage)).then(updatedMessage => {
     
         if (updatedMessage != null) {
             return saveMessage(updatedMessage);
