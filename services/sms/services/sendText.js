@@ -22,11 +22,10 @@ function createMessage(inputTextMessage) {
             var updatedMessage = inputTextMessage;
         
             if (!error) {
-                console.log('Success! The SID for this SMS message is:');
-                console.log(message.sid);
+                console.log('Success! The SID for this SMS message is: ' + message.sid);
                 updatedMessage.sid = message.sid;
                 
-                console.log('Message sent on:');
+                console.log('Message sent on:' + message.dateCreated);
                 console.log(message.dateCreated);
                 updatedMessage.timestamp = message.dateCreated;
                 
@@ -55,6 +54,8 @@ function saveMessage(textMessage) {
         }
     }
     
+    console.log('attempting to add new text to dynamo..')
+    
     docClient.put(params, function(err, data) {
         if(err) {
             console.error("Error loading message to database: " + JSON.stringify(err, null, 2));
@@ -72,6 +73,9 @@ exports.sendMessage = function(receiver, messageContent){
     
     if (updatedMessage != null) {
         saveMessage(updatedMessage);
-    }
+        console.log('message saved');
+    } else {
+        console.error('updatedMessage was null');
+    } 
 };
 
