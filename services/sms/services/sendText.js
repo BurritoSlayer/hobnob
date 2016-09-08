@@ -71,10 +71,10 @@ exports.sendMessage = function(receiver, messageContent){
     
     //const updatedMessage = createMessage(textMessage); 
     
-    Promise.resolve(createMessage(textMessage)).then(updatedMessage => {
+    Promise.resolve(createMessage(textMessage)).then(function(updatedMessage){
     
         if (updatedMessage != null) {
-            saveMessage(updatedMessage);
+            return saveMessage(updatedMessage);
             console.log('message saved');
         } else {
             console.error('updatedMessage was null');
