@@ -9,6 +9,7 @@ var MessageModel = require("../models/textMessage.js");
 
 var exports = module.exports = {};
 var isPaused = true;
+var messageUpdated;
 
 function createMessage(inputTextMessage) {
     var client = new twilio.RestClient(context.twilio_data.accountSid, context.twilio_data.authToken);
@@ -20,15 +21,15 @@ function createMessage(inputTextMessage) {
         body: inputTextMessage.messageContent },
         
         function(error, message) {
-            var updatedMessage = inputTextMessage;
+            messageUpdated = inputTextMessage;
         
             if (!error) {
                 console.log('Success! The SID for this SMS message is: ' + message.sid);
-                updatedMessage.sid = message.sid;
+                messageUpdated.sid = message.sid;
                 
                 console.log('Message sent on:' + message.dateCreated);
                 console.log(message.dateCreated);
-                updatedMessage.timestamp = message.dateCreated;
+                messageUpdated.timestamp = message.dateCreated;
                 
                 var isPaused=true;
                 return updatedMessage;
@@ -76,12 +77,11 @@ exports.sendMessage = function(receiver, messageContent){
     // need to refactor to Promises down the road.. current code can cause bugs
     // if the timeout completes before the return of createMessage()
     function waitForIt(){
-        const updatedMessage = createMessage(textMessage);
         
         if (isPaused) {
             setTimeout(function(){waitForIt()},100);
         } else {
-            if (updatedMessage != null) {
+            if (messageUpdated != null || typeof messageUpdated != 'undefined') {
                 return saveMessage(updatedMessage);
                 console.log('message saved');
             } else {
