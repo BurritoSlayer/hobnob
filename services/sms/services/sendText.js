@@ -32,7 +32,7 @@ function createMessage(inputTextMessage) {
                 messageUpdated.timestamp = message.dateCreated;
                 
                 var isPaused=true;
-                return updatedMessage;
+                return messageUpdated;
             } else {
                 console.error('Error creating message: ' + error.message);
                 return null;
@@ -79,18 +79,20 @@ exports.sendMessage = function(receiver, messageContent){
     // if the timeout completes before the return of createMessage()
     function waitForIt(){
         
-        if (isPaused) {
+        if (messageUpdated.timestamp === null || messageUpdated.timestamp === 'undefined') {
             setTimeout(function(){waitForIt()},100);
+            console.log('waiting..');
         } else {
             if (messageUpdated != null || typeof messageUpdated != 'undefined') {
-                return saveMessage(updatedMessage);
                 console.log('message saved');
+                return saveMessage(messageUpdated);
             } else {
+                console.error('messageUpdated was bad');
                 return null;
-                console.error('updatedMessage was null');
             } 
         };
     }
     
+    waitForIt();
 };
 
