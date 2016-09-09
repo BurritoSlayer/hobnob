@@ -63,11 +63,11 @@ http.createServer(function(req, res){
                 
                 let date = new Date();
                 
-                let receiver = postData['receiver'];
-                let messageContent = postData['messageContent'];
-                let sender = postData['sender'];
+                let receiver = postData['To'];
+                let messageContent = postData['Body'];
+                let sender = postData['From'];
                 let timestamp = date.toString();
-                let sid = postData['sid'];
+                let sid = postData['MessageSid'];
                 
                 let textMessage = new MessageModel.textMessage(receiver, sender, messageContent);
                 textMessage.sid = sid;
