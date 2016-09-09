@@ -113,7 +113,7 @@ function sendMessageToServer(newMessageContent, contact) {
     let method = 'POST';
     let server = 'http://ec2-54-69-93-28.us-west-2.compute.amazonaws.com/texts';
     let sendDataBool = true;
-    let dataToSend = "sendText=true&receiver=" + contact + "&messageContent=" + newMessageContent;
+    let dataToSend = "sendTextBool=true&receiver=" + contact + "&messageContent=" + newMessageContent;
     serverCall(method, server, sendDataBool, dataToSend);
 }
 
