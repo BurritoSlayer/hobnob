@@ -40,7 +40,7 @@ function createMessage(inputTextMessage) {
     });
 };
 
-exports.saveMessage = function(textMessage) {
+var saveMessage = function(textMessage) {
     AWS.config.update({
         region: context.aws_data.region,
         endpoint: context.aws_data.end_point
@@ -71,7 +71,7 @@ exports.saveMessage = function(textMessage) {
     });
 }
 
-exports.sendMessage = function(receiver, messageContent){
+var sendMessage = function(receiver, messageContent){
     const textMessage = new MessageModel.textMessage(receiver, context.twilio_data.accPhoneNum, messageContent);
     
     //const updatedMessage = createMessage(textMessage); 
@@ -100,3 +100,7 @@ exports.sendMessage = function(receiver, messageContent){
     waitForIt();
 };
 
+module.exports = {
+    sendMessage,
+    saveMessage
+}
