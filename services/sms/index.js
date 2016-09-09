@@ -1,6 +1,6 @@
 var http = require('http');
 var sendText = require('./services/sendText.js');
-var MessageModel = require('./models/testMessage.js');
+var MessageModel = require('./models/textMessage.js');
 var qs = require('querystring');
 const spawn = require('child_process').spawn;
 
