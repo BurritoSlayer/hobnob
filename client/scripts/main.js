@@ -1,5 +1,10 @@
 let sms_user_id = 001;//user.get_user_id(); //will need to change after testing
 var displayHtml = "";
+var hardCodedContact = '19899641809';//hardcoded contact, will be changed after testing
+                                     //TODO: change to look at contacts 
+
+//TODO: fix bug - if too many characters in message, formatting will get messed up
+        //(displayId in Message)
 
 var MessageContext = {
     displayContext : null
@@ -36,26 +41,51 @@ function loadTexts() {
   addMessages(current_messages);
 }
 
-function syncTexts() {
+/*
+ * This function is used to send ajax requests to server. 
+ * httpMethod and server are required, sendDataBool should be false
+ * unless sending data through a request like post or put.
+ * If sendDataBool is true, should include the data to send in the 
+ * next parameter
+ * TODO: add response handling ie. if 200 - 300, return ok, etc.
+ */
+serverCall = function(httpMethod, server, sendDataBool, dataToSend) {
     xhr = new XMLHttpRequest();
     
     if ("withCredentials" in xhr) {
-        xhr.open('GET', 'http://ec2-54-69-82-220.us-west-2.compute.amazonaws.com:8081/texts', true);
+        //xhr.open('GET', 'http://ec2-54-69-82-220.us-west-2.compute.amazonaws.com:8081/texts', true);
+        xhr.open(httpMethod.toString(), server.toString(), true);
     } else if (typeof XDomainRequest != "undefined") {
         xhr = new XDomainRequest();
-        xhr.open(method, url);
+        xhr.open(httpMethod, server);
     } else {
         xhr = null;
     }
+        
     xhr.onload = function() {
         var responseText = xhr.responseText;
         console.log(responseText);
     };
     
-    xhr.send();
-    return null;
+    if(sendDataBool) {
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        console.log('dataToSend = ' + dataToSend);
+        xhr.send(dataToSend);
+    } else {
+        xhr.send();
+        return null;
+    }
+
 }
     
+function syncTexts(){
+    let method = 'GET';
+    let server = 'http://ec2-54-69-82-220.us-west-2.compute.amazonaws.com/texts';
+    let sendDataBool = false;
+    let dataToSend = null;
+    serverCall(method, server, sendDataBool, dataToSend);
+}
+
 function submitMessage(){
     let messageString = document.getElementById("text-input").value;
     
@@ -79,10 +109,19 @@ function addMessages(messages) {
     document.getElementById("message-display").innerHTML = displayHtml;
 }
 
+function sendMessageToServer(newMessageContent, contact) {
+    let method = 'POST';
+    let server = 'http://ec2-54-69-93-28.us-west-2.compute.amazonaws.com/texts';
+    let sendDataBool = true;
+    let dataToSend = "sendText=true&receiver=" + contact + "&messageContent=" + newMessageContent;
+    serverCall(method, server, sendDataBool, dataToSend);
+}
+
 function newMessage(messages, newMessageContent) {
     messages.push(new Message(userSender, newMessageContent, -1));
     incrementMessages(messages);
     clearMessageDisplay();
+    sendMessageToServer(newMessageContent, hardCodedContact);
     addMessages(messages);
 }
 

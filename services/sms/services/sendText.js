@@ -51,9 +51,9 @@ function saveMessage(textMessage) {
     var params = {
         TableName: "texts",
         Item: {
-            "sid" : textMessage.sid;
-            "timestamp" : textMessage.timestamp;
-            "sender" : textMessage.sender,
+            "sid" : textMessage.sid,
+            "timestamp" : textMessage.timestamp,
+            "sender" : textMessage.sender.toString(),
             "receiver" : textMessage.reciever,
             "messageContent" : textMessage.messageContent
         }

@@ -1,0 +1,16 @@
+sms:
+
+- need twilio webhook to send post request of incoming message to ec2 instance
+- ec2 will store these in the same dynamodb table the posted texts are
+- syncing texts on the client will involve taking a snapshot of the latest 10? texts
+- after taking the snapshot, display these texts when the load texts function is called
+
+two options for syncing incoming texts from the dynamodb to the client:
+
+- server will store current client ips that are actively requesting to sync texts
+- when new text is added from twilio webhook, also send the text to client from ec2 webhook
+
+    or
+    
+- client will request to get the latest texts every ~3 seconds or so?
+- (time variable should be parameterized, so can be easily changed, possibly even through user configuration)

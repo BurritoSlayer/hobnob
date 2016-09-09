@@ -3,7 +3,7 @@ var sendText = require('./services/sendText.js');
 var qs = require('querystring');
 const spawn = require('child_process').spawn;
 
-var port = 8081;
+var port = 80;
 
 http.createServer(function(req, res){
     if (req.method === 'POST') {
@@ -27,11 +27,17 @@ http.createServer(function(req, res){
                 } else {
                     var receiver = postData['receiver'];
                     var messageContent = postData['messageContent'];
+                    var sendText = false;
                     
+                    if (postData['sendText'] != null || postData['sendText'] === undefined) {
+                        sendText = postData['sendText'];
+                    } 
                     //console.log('receiver: ' + receiver);
                     //console.log('messageContent: ' + messageContent);
                     //console.log('postData: ' + postData)
-                    sendText.sendMessage(receiver, messageContent);
+                    if (sendText) {
+                        sendText.sendMessage(receiver, messageContent);
+                    }
                 }
                 
                 if (!finished) {
@@ -57,10 +63,18 @@ http.createServer(function(req, res){
             res.end();
         }
     } else if (req.method === 'GET') {
-        res.writeHead(404, {'Content-Type': 'text/html'});
-        res.end();
+        if (req.url === '/texts') {
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write('sending data');
+            res.end();
+        } else {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.end();
+        }
     } else {
         res.writeHead(405, 'Method Not Supported', {'Content-Type': 'text/html'});
 	    res.end();
     }
 }).listen(port);
+
+console.log('starting server on port ' + port);
