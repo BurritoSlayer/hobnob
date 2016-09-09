@@ -29,6 +29,8 @@ http.createServer(function(req, res){
                     var messageContent = postData['messageContent'];
                     var sendText = false;
                     
+                    //TODO: add check for size of messageContents. it must be 160 chars or less
+                    
                     if (postData['sendText'] != null || postData['sendText'] === undefined) {
                         sendText = postData['sendText'];
                     } 
@@ -52,6 +54,37 @@ http.createServer(function(req, res){
                 }
             });
             
+        } else if (req.url) === '/receivetexts') {
+            let body = '';
+            let postData;
+            let finished = true;
+            
+            req.on('data', function(data) {
+                body += data;
+            });
+            
+            req.on('end', function() {
+                postData = qs.parse(body);
+                
+                let date = new Date();
+                
+                let receiver = postData['receiver'];
+                let messageContent = postData['messageContent'];
+                let sender = postData['sender'];
+                let timestamp = date.toString();
+                let sid = postData['sid'];
+                
+                let textMessage = new MessageModel.textMessage(receiver, sender, messageContent);
+                textMessage.sid = sid;
+                textMessage.timestamp = timestamp;
+                
+                sendText.saveText(textMessage);
+                
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write('thanks for the data yo');
+                res.end();
+                console.log('posted');
+            });
         } else if (req.url === '/server') {
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write('initializing build script');

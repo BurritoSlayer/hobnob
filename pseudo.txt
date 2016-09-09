@@ -2,6 +2,7 @@ sms:
 
 - need twilio webhook to send post request of incoming message to ec2 instance
 - ec2 will store these in the same dynamodb table the posted texts are
+  (will use POST /receivetexts)
 - syncing texts on the client will involve taking a snapshot of the latest 10? texts
 - after taking the snapshot, display these texts when the load texts function is called
 

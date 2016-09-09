@@ -40,7 +40,7 @@ function createMessage(inputTextMessage) {
     });
 };
 
-function saveMessage(textMessage) {
+exports.saveMessage = function(textMessage) {
     AWS.config.update({
         region: context.aws_data.region,
         endpoint: context.aws_data.end_point
@@ -52,7 +52,7 @@ function saveMessage(textMessage) {
         TableName: "texts",
         Item: {
             "sid" : textMessage.sid,
-            "timestamp" : textMessage.timestamp,
+            "timestamp" : textMessage.timestamp.toString(),
             "sender" : textMessage.sender.toString(),
             "receiver" : textMessage.reciever,
             "messageContent" : textMessage.messageContent
