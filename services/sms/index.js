@@ -28,19 +28,13 @@ http.createServer(function(req, res){
                 } else {
                     var receiver = postData['receiver'];
                     var messageContent = postData['messageContent'];
-                    var sendTextBool = false;
                     
                     //TODO: add check for size of messageContents. it must be 160 chars or less
-                    
-                    if (postData['sendTextBool'] != null || postData['sendTextBool'] === undefined) {
-                        sendTextBool = postData['sendTextBool'];
-                    } 
+
                     //console.log('receiver: ' + receiver);
                     //console.log('messageContent: ' + messageContent);
                     //console.log('postData: ' + postData)
-                    if (sendTextBool) {
-                        sendText.sendMessage(receiver, messageContent);
-                    }
+                    sendText.sendMessage(receiver, messageContent);
                 }
                 
                 if (!finished) {
