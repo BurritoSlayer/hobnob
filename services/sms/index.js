@@ -22,9 +22,10 @@ http.createServer(function(req, res){
                 
                 if (postData === undefined || (postData['receiver'] === undefined || postData['receiver'] === ''
                     || postData['receiver'] === null) || (postData['messageContent'] === undefined 
-                    || postData['messageContent'] === '' || postData['messageContent'] === null)) 
-                {
+                    || postData['messageContent'] === '' || postData['messageContent'] === null)) {
+                    
                     finished = false;
+                    
                 } else {
                     var receiver = postData['receiver'];
                     var messageContent = postData['messageContent'];
@@ -92,9 +93,17 @@ http.createServer(function(req, res){
         }
     } else if (req.method === 'GET') {
         if (req.url === '/texts') {
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write('sending data');
-            res.end();
+            let rs = sendText.queryMessages();
+            if (rs === null || rs === undefined) {
+                console.error('no messages to send..');
+                res.wrteHead(500, {'Content-Type': 'text/html'});
+                res.wrte('error - no data found');
+                res.end();
+            } else {
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write(rs);
+                res.end();
+            }
         } else {
             res.writeHead(404, {'Content-Type': 'text/html'});
             res.end();

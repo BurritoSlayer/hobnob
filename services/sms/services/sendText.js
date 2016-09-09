@@ -100,7 +100,44 @@ var sendMessage = function(receiver, messageContent){
     waitForIt();
 };
 
+//TODO: refactor to look by specific phone number, either in receiver or sender
+    //also might split this out into its own js file.
+var queryMessages = function(){
+    let messageArr = [];
+    
+    AWS.config.update({
+        region: context.aws_data.region,
+        endpoint: context.aws_data.end_point
+    });
+    
+    let docClient = new AWS.DynamoDB.DocumentClient();
+
+    let params = {
+	   TableName: "texts",
+	   IndexName: "sid-timestamp-index",
+	   ProjectionExpression: "messageContent, sender, receiver",
+	   Limit: 10,
+	   ScanIndexForward: "false"
+    }
+    
+    console.log('attempting to query list of messages from database');
+    
+    docClient.query(params, function(err, data) {
+        if (err) {
+            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+            return null;
+        } else {
+            console.log("Query succeeded.");
+            data.Items.forEach(function(item) {
+                messageArr.push(new MessageModel.textMessage(data.receiver, data.sender, data.messageContent);)
+            });
+            return messageArr;
+        }
+    });
+}
+
 module.exports = {
     sendMessage,
-    saveMessage
+    saveMessage,
+    queryMessages
 }
