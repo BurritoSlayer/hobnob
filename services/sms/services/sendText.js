@@ -54,7 +54,7 @@ exports.saveMessage = function(textMessage) {
             "sid" : textMessage.sid,
             "timestamp" : textMessage.timestamp.toString(),
             "sender" : textMessage.sender.toString(),
-            "receiver" : textMessage.reciever,
+            "receiver" : textMessage.reciever.toString(),
             "messageContent" : textMessage.messageContent
         }
     }

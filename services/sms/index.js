@@ -1,5 +1,6 @@
 var http = require('http');
 var sendText = require('./services/sendText.js');
+var MessageModel = require('./models/testMessage.js');
 var qs = require('querystring');
 const spawn = require('child_process').spawn;
 
@@ -54,7 +55,7 @@ http.createServer(function(req, res){
                 }
             });
             
-        } else if (req.url) === '/receivetexts') {
+        } else if (req.url === '/receivetexts') {
             let body = '';
             let postData;
             let finished = true;
@@ -78,7 +79,7 @@ http.createServer(function(req, res){
                 textMessage.sid = sid;
                 textMessage.timestamp = timestamp;
                 
-                sendText.saveText(textMessage);
+                sendText.saveMessage(textMessage);
                 
                 res.writeHead(200, {'Content-Type': 'text/html'});
                 res.write('thanks for the data yo');
