@@ -96,8 +96,8 @@ http.createServer(function(req, res){
             let rs = sendText.queryMessages();
             if (rs === null || rs === undefined) {
                 console.error('no messages to send..');
-                res.wrteHead(500, {'Content-Type': 'text/html'});
-                res.wrte('error - no data found');
+                res.writeHead(500, {'Content-Type': 'text/html'});
+                res.write('error - no data found');
                 res.end();
             } else {
                 res.writeHead(200, {'Content-Type': 'text/html'});

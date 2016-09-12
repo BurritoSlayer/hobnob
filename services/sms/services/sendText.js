@@ -116,6 +116,7 @@ var queryMessages = function(){
 	   TableName: "texts",
 	   IndexName: "sid-timestamp-index",
 	   ProjectionExpression: "messageContent, sender, receiver",
+       KeyConditionExpression: "sid = :v_sid AND timestamp > :v_timestamp", 
 	   Limit: 10,
 	   ScanIndexForward: "false"
     }
@@ -129,7 +130,7 @@ var queryMessages = function(){
         } else {
             console.log("Query succeeded.");
             data.Items.forEach(function(item) {
-                messageArr.push(new MessageModel.textMessage(data.receiver, data.sender, data.messageContent);)
+                messageArr.push(new MessageModel.textMessage(data.receiver, data.sender, data.messageContent));
             });
             return messageArr;
         }
