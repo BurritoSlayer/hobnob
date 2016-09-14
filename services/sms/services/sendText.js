@@ -106,9 +106,7 @@ var queryMessages = function(){
     let date = new Date();
     date.setMonth(date.getMonth() - 1); //one month ago from today, which means 
                                         //we're only returning texts from this month
-    console.log("date " + date);
-    console.log("date string " + date);
-    
+    const unixtime = date.getTime()/1000;
     let messageArr = [];
     
     AWS.config.update({
@@ -119,17 +117,17 @@ var queryMessages = function(){
     let docClient = new AWS.DynamoDB.DocumentClient();
 
     let params = {
-	   TableName: "texts2",
-	   IndexName: "sid-timestamp-index",
+	   TableName: "texts3",
+	   //IndexName: "sid-timestamp-index",
 	   ProjectionExpression: "messageContent, sender, receiver",
        KeyConditionExpression: "#convo = :v_convo AND #timestamp > :v_timestamp", 
        ExpressionAttributeNames: {
-           "#convo": "convo"
+           "#convo": "convo",
            "#timestamp": "timestamp"
        },
        ExpressionAttributeValues: {
-           ":v_convo": 1
-           ":v_timestamp": date //one month from today
+           ":v_convo": 1,
+           ":v_timestamp": unixtime //one month from today
        },
 	   Limit: 10,
 	   ScanIndexForward: "false"

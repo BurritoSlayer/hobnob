@@ -94,14 +94,16 @@ http.createServer(function(req, res){
     } else if (req.method === 'GET') {
         if (req.url === '/texts') {
             let rs = sendText.queryMessages();
-            if (rs === null || rs === undefined) {
+            if (rs === null) {
                 console.error('no messages to send..');
                 res.writeHead(500, {'Content-Type': 'text/html'});
                 res.write('error - no data found');
                 res.end();
             } else {
                 res.writeHead(200, {'Content-Type': 'text/html'});
-                res.write(rs);
+                rs.Items.forEach(function(item) {
+                    res.write(JSON.stringify(item));
+                }
                 res.end();
             }
         } else {
