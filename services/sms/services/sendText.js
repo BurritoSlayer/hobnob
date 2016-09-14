@@ -102,7 +102,7 @@ var sendMessage = function(receiver, messageContent){
 
 //TODO: refactor to look by specific phone number, either in receiver or sender
     //also might split this out into its own js file.
-var queryMessages = function(){
+var queryMessages = function(callback){
     let date = new Date();
     date.setMonth(date.getMonth() - 1); //one month ago from today, which means 
                                         //we're only returning texts from this month
@@ -144,7 +144,7 @@ var queryMessages = function(){
             data.Items.forEach(function(item) {
                 messageArr.push(new MessageModel.textMessage(data.receiver, data.sender, data.messageContent));
             });
-            return messageArr;
+            callback(messageArr);
         }
     });
 }

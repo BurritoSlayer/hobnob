@@ -93,17 +93,11 @@ http.createServer(function(req, res){
         }
     } else if (req.method === 'GET') {
         if (req.url === '/texts') {
-            let rs = sendText.queryMessages();
-            if (rs === null) {
-                console.error('no messages to send..');
-                res.writeHead(500, {'Content-Type': 'text/html'});
-                res.write('error - no data found');
-                res.end();
-            } else {
+            snedText.queryMessages(function(messageArr) {
                 res.writeHead(200, {'Content-Type': 'text/html'});
-                rs.Items.forEach(function(item) {
+                messageArr.Items.forEach(function(item) {
                     res.write(JSON.stringify(item));
-                }
+                });
                 res.end();
             }
         } else {
