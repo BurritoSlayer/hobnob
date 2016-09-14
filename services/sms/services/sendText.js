@@ -106,6 +106,8 @@ var queryMessages = function(){
     let date = new Date();
     date.setMonth(date.getMonth() - 1); //one month ago from today, which means 
                                         //we're only returning texts from this month
+    console.log("date " + date);
+    console.log("date string " + date);
     
     let messageArr = [];
     
