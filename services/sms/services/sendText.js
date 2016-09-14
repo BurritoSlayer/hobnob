@@ -24,12 +24,15 @@ function createMessage(inputTextMessage) {
             messageUpdated = inputTextMessage;
         
             if (!error) {
+                let d = new Date();
+                const unixtime = d.parse(message.dateCreated).getTime()/1000;
+                
                 console.log('Success! The SID for this SMS message is: ' + message.sid);
                 messageUpdated.sid = message.sid;
                 
                 console.log('Message sent on:' + message.dateCreated);
                 console.log(message.dateCreated);
-                messageUpdated.timestamp = message.dateCreated;
+                messageUpdated.timestamp = unixtime;
                 
                 var isPaused=true;
                 return messageUpdated;
@@ -143,8 +146,8 @@ var queryMessages = function(callback){
         } else {
             console.log("Query succeeded.");
             data.Items.forEach(function(item) {
-                let msg = MessageModel.textMessage(item.receiver, item.sender, item.messageContent);
-                msg.convo = 1;
+                let msg = new MessageModel.textMessage(item.receiver, item.sender, item.messageContent);
+                msg.convo = item.convo;
                 msg.timestamp = item.timestamp;
                 msg.sid = item.sid;
                 messageArr.push(msg);

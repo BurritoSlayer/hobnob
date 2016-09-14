@@ -68,11 +68,13 @@ http.createServer(function(req, res){
                 let messageContent = postData['Body'];
                 let sender = postData['From'];
                 let timestamp = date.toString();
+                let convo = 1; //hardcoded, needs to be changed later
                 let sid = postData['MessageSid'];
                 
                 let textMessage = new MessageModel.textMessage(receiver, sender, messageContent);
                 textMessage.sid = sid;
                 textMessage.timestamp = timestamp;
+                textMessage.convo = convo;
                 
                 sendText.saveMessage(textMessage);
                 
