@@ -119,14 +119,16 @@ var queryMessages = function(){
     let docClient = new AWS.DynamoDB.DocumentClient();
 
     let params = {
-	   TableName: "texts",
+	   TableName: "texts2",
 	   IndexName: "sid-timestamp-index",
 	   ProjectionExpression: "messageContent, sender, receiver",
-       KeyConditionExpression: "#timestamp > :v_timestamp", 
+       KeyConditionExpression: "#convo = :v_convo AND #timestamp > :v_timestamp", 
        ExpressionAttributeNames: {
+           "#convo": "convo"
            "#timestamp": "timestamp"
        },
        ExpressionAttributeValues: {
+           ":v_convo": 1
            ":v_timestamp": date //one month from today
        },
 	   Limit: 10,
