@@ -143,7 +143,11 @@ var queryMessages = function(callback){
         } else {
             console.log("Query succeeded.");
             data.Items.forEach(function(item) {
-                messageArr.push(new MessageModel.textMessage(item.receiver, item.sender, item.messageContent));
+                let msg = MessageModel.textMessage(item.receiver, item.sender, item.messageContent;
+                msg.convo = 1;
+                msg.timestamp = item.timestamp;
+                msg.sid = item.sid;
+                messageArr.push(msg);
             });
             callback(messageArr);
         }
