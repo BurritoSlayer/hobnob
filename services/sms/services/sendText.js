@@ -103,6 +103,10 @@ var sendMessage = function(receiver, messageContent){
 //TODO: refactor to look by specific phone number, either in receiver or sender
     //also might split this out into its own js file.
 var queryMessages = function(){
+    let date = new Date();
+    date.setMonth(d.getMonth() - 1); //one month ago from today, which means 
+                                        //we're only returning texts from this month
+    
     let messageArr = [];
     
     AWS.config.update({
@@ -116,7 +120,13 @@ var queryMessages = function(){
 	   TableName: "texts",
 	   IndexName: "sid-timestamp-index",
 	   ProjectionExpression: "messageContent, sender, receiver",
-       KeyConditionExpression: "sid = :v_sid AND timestamp > :v_timestamp", 
+       KeyConditionExpression: "timestamp > :v_timestamp", 
+       ExpressionAttributeNames: {
+           "timestamp": "timestamp"
+       },
+       ExpressionAttributeValues: {
+           ":v_timestamp": date; //one month from today
+       },
 	   Limit: 10,
 	   ScanIndexForward: "false"
     }
