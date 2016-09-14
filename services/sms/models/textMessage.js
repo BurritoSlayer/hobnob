@@ -4,6 +4,7 @@ textMessage = function(receiver, sender, messageContent) {
     this.messageContent = messageContent;
     this.sid = null;
     this.timestamp = null;
+    this.convo = null;
 }
 
 exports.textMessage = textMessage;

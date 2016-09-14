@@ -49,13 +49,14 @@ var saveMessage = function(textMessage) {
     var docClient = new AWS.DynamoDB.DocumentClient();
     
     var params = {
-        TableName: "texts",
+        TableName: "texts3",
         Item: {
             "sid" : textMessage.sid,
             "timestamp" : textMessage.timestamp.toString(),
             "sender" : textMessage.sender.toString(),
             "receiver" : textMessage.receiver.toString(),
-            "messageContent" : textMessage.messageContent
+            "messageContent" : textMessage.messageContent,
+            "convo" : 1
         }
     }
     
@@ -142,7 +143,7 @@ var queryMessages = function(callback){
         } else {
             console.log("Query succeeded.");
             data.Items.forEach(function(item) {
-                messageArr.push(new MessageModel.textMessage(data.receiver, data.sender, data.messageContent));
+                messageArr.push(new MessageModel.textMessage(item.receiver, item.sender, item.messageContent));
             });
             callback(messageArr);
         }

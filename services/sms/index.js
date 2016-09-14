@@ -93,13 +93,13 @@ http.createServer(function(req, res){
         }
     } else if (req.method === 'GET') {
         if (req.url === '/texts') {
-            snedText.queryMessages(function(messageArr) {
+            sendText.queryMessages(function(messageArr) {
                 res.writeHead(200, {'Content-Type': 'text/html'});
-                messageArr.Items.forEach(function(item) {
+                messageArr.forEach(function(item) {
                     res.write(JSON.stringify(item));
                 });
                 res.end();
-            }
+            });
         } else {
             res.writeHead(404, {'Content-Type': 'text/html'});
             res.end();
