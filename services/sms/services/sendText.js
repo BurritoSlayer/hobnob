@@ -55,7 +55,7 @@ var saveMessage = function(textMessage) {
         TableName: "texts3",
         Item: {
             "sid" : textMessage.sid,
-            "timestamp" : textMessage.timestamp.toString(),
+            "timestamp" : textMessage.timestamp,
             "sender" : textMessage.sender.toString(),
             "receiver" : textMessage.receiver.toString(),
             "messageContent" : textMessage.messageContent,

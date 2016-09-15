@@ -24,9 +24,11 @@ function Message(sender, content, displayId) {
     this.displayNumber = (this.displayId * 10) + 3;
 }
 
-var current_messages = [new Message(userSender,"hi", 4),new Message("contact", "hey", 3), 
+/*var current_messages = [new Message(userSender,"hi", 4),new Message("contact", "hey", 3), 
                         new Message(userSender,"wsup", 2), new Message("contact", "nm, u?", 1), 
-                        new Message(userSender, "nm..", 0)];
+                        new Message(userSender, "nm..", 0)];*/
+
+var current_messages = [];
 
 function loadTexts() {
   //clears the message display
@@ -37,8 +39,9 @@ function loadTexts() {
 
   clearMessageDisplay();
   MessageContext.displayContext = "SMS";
-  //sync_texts();
-  addMessages(current_messages);
+  syncTexts(function(currMessages){
+      addMessages(currMessages);
+  });
 }
 
 /*
@@ -49,7 +52,7 @@ function loadTexts() {
  * next parameter
  * TODO: add response handling ie. if 200 - 300, return ok, etc.
  */
-serverCall = function(httpMethod, server, sendDataBool, dataToSend) {
+serverCall = function(httpMethod, server, sendDataBool, dataToSend, callback) {
     xhr = new XMLHttpRequest();
     
     if ("withCredentials" in xhr) {
@@ -65,6 +68,7 @@ serverCall = function(httpMethod, server, sendDataBool, dataToSend) {
     xhr.onload = function() {
         var responseText = xhr.responseText;
         console.log(responseText);
+        callback(responseText);
     };
     
     if(sendDataBool) {
@@ -78,12 +82,19 @@ serverCall = function(httpMethod, server, sendDataBool, dataToSend) {
 
 }
     
-function syncTexts(){
-    let method = 'GET';
-    let server = 'http://ec2-54-69-82-220.us-west-2.compute.amazonaws.com/texts';
-    let sendDataBool = false;
-    let dataToSend = null;
-    serverCall(method, server, sendDataBool, dataToSend);
+syncTexts = function(callback){
+    serverCall('GET', 'http://ec2-54-69-93-28.us-west-2.compute.amazonaws.com/texts', false, null, function(responseText){
+        let rt = JSON.parse(responseText);
+        let currMessages = [];
+        
+        rt.forEach(function(item, i){
+            let msg = new Message(item.sender, item.messageContent, i); 
+            currMessages.push(msg);
+        });
+        
+        callback(currMessages);
+        console.log("response is " + current_messages);
+    });
 }
 
 function submitMessage(){

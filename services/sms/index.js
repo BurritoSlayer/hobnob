@@ -62,12 +62,13 @@ http.createServer(function(req, res){
             req.on('end', function() {
                 postData = qs.parse(body);
                 
-                let date = new Date();
+                let d = new Date();
+                const unixtime = d.parse(message.dateCreated).getTime()/1000;
                 
                 let receiver = postData['To'];
                 let messageContent = postData['Body'];
                 let sender = postData['From'];
-                let timestamp = date.toString();
+                let timestamp = unixtime;
                 let convo = 1; //hardcoded, needs to be changed later
                 let sid = postData['MessageSid'];
                 
@@ -97,9 +98,12 @@ http.createServer(function(req, res){
         if (req.url === '/texts') {
             sendText.queryMessages(function(messageArr) {
                 res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write(JSON.stringify(messageArr));
+                /*
                 messageArr.forEach(function(item) {
                     res.write(JSON.stringify(item));
                 });
+                */
                 res.end();
             });
         } else {
