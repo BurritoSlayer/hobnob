@@ -15,3 +15,6 @@ two options for syncing incoming texts from the dynamodb to the client:
     
 - client will request to get the latest texts every ~3 seconds or so?
 - (time variable should be parameterized, so can be easily changed, possibly even through user configuration)
+
+
+- need to save contacts in database

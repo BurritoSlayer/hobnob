@@ -3,9 +3,6 @@ var displayHtml = "";
 var hardCodedContact = '19899641809';//hardcoded contact, will be changed after testing
                                      //TODO: change to look at contacts 
 
-//TODO: fix bug - if too many characters in message, formatting will get messed up
-        //(displayId in Message)
-
 var MessageContext = {
     displayContext : null
 }
@@ -90,6 +87,7 @@ syncTexts = function(callback){
         rt.forEach(function(item, i){
             let msg = new Message(item.sender, item.messageContent, i); 
             currMessages.push(msg);
+            current_messages.push(msg);
         });
         
         callback(currMessages);
@@ -108,13 +106,25 @@ function submitMessage(){
     }
 }
 
+/*
+ * Add messages in array to message-display div
+ * would like to refactor this to not loop twice, possibly store phone in conversation object?
+ */
 function addMessages(messages) {
     for (let m of messages) {
+        let displayPerson = m.messageSender
+      
+        for (let c of contactList) {
+            if (m.messageSender === c.phoneNum) {
+                displayPerson = c.name;
+            }
+        }
+      
         if (typeof m.messageContent != "string") {
             console.log("invalid message");
         }
         displayHtml += '<span id="message" style="bottom:' + m.displayNumber + '%;">' +
-                     m.messageSender + ': ' + m.messageContent + '</span>';
+                     displayPerson + ': ' + m.messageContent + '</span>';
     }
     
     document.getElementById("message-display").innerHTML = displayHtml;
@@ -125,7 +135,9 @@ function sendMessageToServer(newMessageContent, contact) {
     let server = 'http://ec2-54-69-93-28.us-west-2.compute.amazonaws.com/texts';
     let sendDataBool = true;
     let dataToSend = "sendTextBool=true&receiver=" + contact + "&messageContent=" + newMessageContent;
-    serverCall(method, server, sendDataBool, dataToSend);
+    serverCall(method, server, sendDataBool, dataToSend, function(responseText){
+        console.log(responseText);
+    });
 }
 
 function newMessage(messages, newMessageContent) {
@@ -159,6 +171,44 @@ function createCorsRequest(method, url) {
         xhr = null;
     }
     return xhr;
+}
+
+function printHi() {
+    console.log('hi');
+}
+
+function addContact(name, num) {
+    let newContact = new Contact();
+    newContact.name = name;
+    newContact.phoneNum = num;
+    contactList.push(newContact);
+}
+
+getContacts = function(callback) {
+    let method = 'GET';
+    let server = '';
+    let sdb = false; //send data bool
+    let dts = null; //data to send
+    serverCall(method, server, sdb, dts, function(responseText) {
+        callback(responseText);
+    }
+}
+               
+function loadContacts() {
+    getContacts(function(contacts) {
+        contacts.forEach(function(contact){
+            contactList.push(contact);
+        }
+    }
+}
+
+function displayContacts(contactList) {
+    
+}
+        
+// load contacts as soon as app is opened
+window.onload = function() {
+    loadContacts();
 }
 
 // key listeners

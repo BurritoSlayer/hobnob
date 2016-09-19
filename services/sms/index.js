@@ -63,7 +63,7 @@ http.createServer(function(req, res){
                 postData = qs.parse(body);
                 
                 let d = new Date();
-                const unixtime = d.parse(message.dateCreated).getTime()/1000;
+                const unixtime = d.getTime()/1000;
                 
                 let receiver = postData['To'];
                 let messageContent = postData['Body'];

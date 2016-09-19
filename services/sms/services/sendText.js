@@ -24,8 +24,7 @@ function createMessage(inputTextMessage) {
             messageUpdated = inputTextMessage;
         
             if (!error) {
-                let d = new Date();
-                const unixtime = d.parse(message.dateCreated).getTime()/1000;
+                const unixtime = Date.parse(message.dateCreated)/1000;
                 
                 console.log('Success! The SID for this SMS message is: ' + message.sid);
                 messageUpdated.sid = message.sid;
